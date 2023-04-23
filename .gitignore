@@ -1,3 +1,4 @@
 *.7z
 /private/media/thumb
 /private/media/video
+/private/sql.json

@@ -2,7 +2,7 @@
 include_once __DIR__ . '/user.php';
 include_once __DIR__ . '/video.php';
 
-class Playlist
+class Playlist implements Arrayable
 {
     private int $id, $userid;
     private string $name;
@@ -32,7 +32,7 @@ class Playlist
 
     public function getEntries()
     {
-        if (!isset($this->entries)) {
+        if (!isset($this->entries) || !sizeof($this->entries)) {
             $this->entries = [];
             if ($stmt = SQL::runQuery(
                 "EXECUTE W_GetPlaylistEntries @plsid = ?",
@@ -97,9 +97,9 @@ class Playlist
         }
     }
 
-    public static function create(string $name)
+    public static function create(string $name, User $user = null)
     {
-        if (!($user = User::getUser())) {
+        if (!$user && !($user = User::getUser())) {
             return -2;
         }
         if ($stmt = SQL::runQuery(
@@ -128,9 +128,9 @@ class Playlist
         return -1;
     }
 
-    public function edit(string $name)
+    public function edit(string $name, User $user = null)
     {
-        if (!($user = User::getUser())) {
+        if (!$user && !($user = User::getUser())) {
             return -2;
         }
 
@@ -204,5 +204,15 @@ class Playlist
             }
         }
         return -1;
+    }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'userId' => $this->getUserId(),
+            'name' => $this->getName(),
+            'videos' => $this->getEntries()
+        ];
     }
 }

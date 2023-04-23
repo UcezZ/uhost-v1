@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . '/../../private/arrayable.php';
+include_once __DIR__ . '/../../../private/arrayable.php';
 
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     ResponseHelper::sendCORS();
@@ -78,24 +78,25 @@ class ResponseHelper
      * Convert Arrayable instances to array recursively
      * @param array $data Response payload
      */
-    private static function arrayableToArrayRecursive(array &$data)
+    private static function arrayableToArrayRecursive(mixed &$data)
     {
-        $tmp = [];
-        foreach ($data as $e) {
-            if ($e instanceof Arrayable) {
-                array_push($tmp, $e->toArray());
-            }
+        if ($data instanceof Arrayable) {
+            $data = $data->toArray();
         }
-        if (sizeof($tmp)) {
-            $data = $tmp;
-            unset($tmp);
-        } else {
+        if (is_array($data)) {
             foreach ($data as $key => $value) {
-                if (is_array($data[$key])) {
-                    self::arrayableToArrayRecursive($data[$key]);
-                }
+                self::arrayableToArrayRecursive($data[$key]);
             }
         }
+        // foreach ($data as $key => $value) {
+        //     if (is_array($value)) {
+        //         self::arrayableToArrayRecursive($data[$key]);
+        //     }
+        //     if ($value instanceof Arrayable) {
+        //         // $data[$key] = $value->toArray();
+        //         print_r($value->toArray());
+        //     }
+        // }
     }
 
     /**
@@ -104,11 +105,7 @@ class ResponseHelper
      */
     public static function successResponse(mixed $data = null)
     {
-        if ($data instanceof Arrayable) {
-            $data = $data->toArray();
-        } else if (is_array($data)) {
-            self::arrayableToArrayRecursive($data);
-        }
+        self::arrayableToArrayRecursive($data);
 
         self::defaultResponse($data, 200, true);
     }

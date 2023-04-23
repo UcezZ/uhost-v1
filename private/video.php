@@ -276,9 +276,11 @@ class Video implements Arrayable
         }
     }
 
-    public function delete()
+    public function delete(User $user = null)
     {
-        $user = User::getUser();
+        if (!$user) {
+            $user = User::getUser();
+        }
         if ($this->userid == $user->getId() || $user->isAdmin()) {
             if (SQL::runQuery(
                 "EXECUTE W_RemoveVideoByID @id = ?",
@@ -299,9 +301,11 @@ class Video implements Arrayable
         }
     }
 
-    public function edit(string $name, bool $public)
+    public function edit(string $name, bool $public, User $user = null)
     {
-        $user = User::getUser();
+        if (!$user) {
+            $user = User::getUser();
+        }
         if ($this->userid == $user->getId() || $user->isAdmin()) {
             if (SQL::runQuery(
                 "EXECUTE W_EditVideo @id = ?, @name = ?, @pub = ?",
@@ -366,9 +370,43 @@ class Video implements Arrayable
         return -1;
     }
 
-    public static function search(string $query, SearchParams $params)
+    public static function searchCount(string $query, SearchParams $params, User $user = null)
     {
-        $user = User::getUser();
+        if (!$user) {
+            $user = User::getUser();
+        }
+        $mask = $query;
+        while (str_contains($mask, ' ') || str_contains($mask, '%%')) {
+            $mask = str_replace([' ', '%%'], '%', $mask);
+        }
+        $mask = trim($mask, " \t\n\r\0\x0B%");
+
+        if (strlen($mask) == 0) {
+            return 0;
+        } else if (strlen($mask) < 3) {
+            return 0;
+        } else if (strlen($mask) > 30) {
+            return 0;
+        }
+
+        $mask = str_replace('_', '[_]', $mask);
+
+        if ($stmt = SQL::runQuery(
+            "EXECUTE W_SearchVideoCount @querymask = ?, @userid = ?, @own = ?",
+            ["%$mask%", $user ? $user->getId() : 0, $params->getOwn()]
+        )) {
+            if ($row = SQL::sqlResultFirstRow($stmt)) {
+                return $row['CNT'];
+            }
+        }
+        return 0;
+    }
+
+    public static function search(string $query, SearchParams $params, User $user = null)
+    {
+        if (!$user) {
+            $user = User::getUser();
+        }
         $mask = $query;
         while (str_contains($mask, ' ') || str_contains($mask, '%%')) {
             $mask = str_replace([' ', '%%'], '%', $mask);

@@ -65,10 +65,9 @@ class Comment implements Arrayable
         $user = $this->getUser();
         return [
             'id' => $this->getId(),
-            //'userid' => $this->getUserId(),
-            //'videoid' => $this->getVideoId(),
+            'video' => $this->getVideo()?->toArray(),
             'humantime' => $this->getHumanTime(),
-            'text' => $this->getText(),
+            'text' => $this->text,
             'user' => [
                 'id' => $user->getId(),
                 'name' => $user->getName()

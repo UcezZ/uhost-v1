@@ -2,6 +2,7 @@
 include_once __DIR__ . '/tokenhandler.php';
 include_once __DIR__ . '/sql.php';
 include_once __DIR__ . '/arrayable.php';
+include_once __DIR__ . '/common.php';
 
 class User implements Arrayable
 {
@@ -88,7 +89,7 @@ class User implements Arrayable
     {
         $pwdhash = md5($password);
 
-        if ($stmt = SQL::runQuery("EXECUTE W_Login @login = ?, @pwdhash = ?", [$login, $pwdhash])) {
+        if ($stmt = SQL::runQuery("EXECUTE W_Login @login = ?, @pwdhash = ?, @ip = ?", [$login, $pwdhash, Common::getClientIp()])) {
             if ($result = SQL::sqlResultFirstRow($stmt)) {
                 if (!isset($result['ERROR'])) {
                     if ($useCookie) {

@@ -5,7 +5,7 @@ include_once __DIR__ . '/../../../private/playlist.php';
 include_once __DIR__ . '/../../../private/sql.php';
 include_once __DIR__ . '/../../../private/tokenhandler.php';
 include_once __DIR__ . '/../../../private/locale.php';
-include_once __DIR__ . '/../responsehelper.php';
+include_once __DIR__ . '/../private/responsehelper.php';
 
 $currentuser = User::getUser();
 

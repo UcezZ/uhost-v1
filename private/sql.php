@@ -2,18 +2,14 @@
 
 class SQL
 {
-    private static string $serverName = "localhost,49550";
-    private static array $connectionInfo = [
-        "Database" => "mirea_videohost_5",
-        "UID" => "kRtbDiHn4H6wGBng",
-        "PWD" => "pWmj9BsyTxjZqysF"
-    ];
     private static $conn;
 
     private static function connect()
     {
         if (!isset(self::$conn) || is_null(self::$conn)) {
-            self::$conn = sqlsrv_connect(self::$serverName, self::$connectionInfo);
+            $data = json_decode(file_get_contents(__DIR__ . '/sql.json'), true);
+
+            self::$conn = sqlsrv_connect($data['server'], $data['connection']);
         }
         if (!self::$conn) {
             die(print_r(sqlsrv_errors(), true));
