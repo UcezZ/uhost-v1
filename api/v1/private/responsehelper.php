@@ -88,25 +88,15 @@ class ResponseHelper
                 self::arrayableToArrayRecursive($data[$key]);
             }
         }
-        // foreach ($data as $key => $value) {
-        //     if (is_array($value)) {
-        //         self::arrayableToArrayRecursive($data[$key]);
-        //     }
-        //     if ($value instanceof Arrayable) {
-        //         // $data[$key] = $value->toArray();
-        //         print_r($value->toArray());
-        //     }
-        // }
     }
 
     /**
      * Default success response
-     * @param array $data Response payload
+     * @param mixed $data Response payload
      */
     public static function successResponse(mixed $data = null)
     {
         self::arrayableToArrayRecursive($data);
-
         self::defaultResponse($data, 200, true);
     }
 
