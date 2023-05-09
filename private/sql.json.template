@@ -1,0 +1,8 @@
+{
+    "server": "127.0.0.1", // SQL server address
+    "connection": {
+        "Database": "dbname", // SQL server database name
+        "UID": "user", // SQL server username
+        "PWD": "password" // SQL server password
+    }
+}
