@@ -8,7 +8,7 @@ include_once __DIR__ . '/../private/responsehelper.php';
 if ($currentuser = User::getUser()) {
     switch ($_SERVER['REQUEST_METHOD']) {
         case 'GET':
-            $userId = isset($_GET['u']) && filter_input(INPUT_GET, 'u', FILTER_VALIDATE_INT) && User::getUser($_GET['u']) ? $_GET['u'] : $currentuser->getId();
+            $userId = isset($_GET['u']) && filter_input(INPUT_GET, 'u', FILTER_VALIDATE_INT) ? $_GET['u'] : $currentuser->getId();
             $playlistCollection = Playlist::getAll($userId);
 
             if (isset($playlistCollection) && sizeof($playlistCollection)) {
