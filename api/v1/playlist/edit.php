@@ -28,7 +28,7 @@ if ($currentuser = User::getUser()) {
             ResponseHelper::errorMessage(message: SQL::getErrors(), httpCode: 500);
             break;
     }
-    ResponseHelper::errorMessage(httpCode: 400);
+    ResponseHelper::errorResponse();
 }
 
-ResponseHelper::errorMessage(httpCode: 403);
+ResponseHelper::errorMessage(message: Locale::getValue('common.error.unauthorized'), httpCode: 401);

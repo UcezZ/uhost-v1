@@ -28,11 +28,11 @@ if ($currentuser = User::getUser()) {
                 ResponseHelper::errorMessage($errorMessage, Locale::getValue('common.error.remove.message'));
             }
         default:
-            ResponseHelper::errorMessage(Locale::getValue('common.error.notfound'), '', 404);
+            ResponseHelper::errorMessage(message: Locale::getValue('common.error.notfound'), httpCode: 404);
             break;
     }
 
-    ResponseHelper::errorMessage(httpCode: 400);
+    ResponseHelper::errorResponse();
 } else {
-    ResponseHelper::errorMessage(Locale::getValue('common.error.unauthorized'), '', 401);
+    ResponseHelper::errorMessage(message: Locale::getValue('common.error.unauthorized'), httpCode: 401);
 }

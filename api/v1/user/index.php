@@ -19,7 +19,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             ResponseHelper::successResponse($currentuser);
         }
 
-        ResponseHelper::errorMessage(Locale::getValue('auth.error.unauthorized'), '', 401);
+        ResponseHelper::errorMessage(message: Locale::getValue('common.error.unauthorized'), httpCode: 401);
         break;
     case 'POST':
         if (isset($currentuser)) {
@@ -43,6 +43,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         break;
     default:
-        ResponseHelper::errorMessage(Locale::getValue('common.error.notfound'), '', 404);
+        ResponseHelper::errorMessage(message: Locale::getValue('common.error.notfound'), httpCode: 404);
         break;
 }

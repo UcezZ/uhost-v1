@@ -119,6 +119,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         }
         break;
     default:
-        ResponseHelper::errorMessage(Locale::getValue('common.error.notfound'), '', 404);
+        ResponseHelper::errorMessage(message: Locale::getValue('common.error.notfound'), httpCode: 404);
         break;
 }

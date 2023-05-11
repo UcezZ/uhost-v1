@@ -48,4 +48,4 @@ if ($currentuser = User::getUser()) {
     ResponseHelper::errorMessage(httpCode: 400);
 }
 
-ResponseHelper::errorMessage(httpCode: 403);
+ResponseHelper::errorMessage(message: Locale::getValue('common.error.unauthorized'), httpCode: 401);

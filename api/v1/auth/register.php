@@ -54,4 +54,4 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-ResponseHelper::errorMessage(httpCode: 403);
+ResponseHelper::errorResponse();

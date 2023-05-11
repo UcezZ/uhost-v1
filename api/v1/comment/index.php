@@ -34,7 +34,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
     case 'POST':
         if (!isset($currentuser)) {
-            ResponseHelper::errorMessage(httpCode: 403);
+            ResponseHelper::errorMessage(message: Locale::getValue('common.error.unauthorized'), httpCode: 401);
         }
 
         if (isset($_POST['alias']) && isset($_POST['text'])) {
@@ -58,4 +58,4 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-ResponseHelper::errorMessage(httpCode: 400);
+ResponseHelper::errorResponse();
